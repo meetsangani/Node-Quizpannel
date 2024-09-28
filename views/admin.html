@@ -1,0 +1,86 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const adminData = JSON.parse(localStorage.getItem("adminData")) || [];
+            const adminTable = document.getElementById("admin-table");
+
+            // Populate admin table with enrollment numbers, scores, and checkboxes
+            const renderTable = () => {
+                adminTable.innerHTML = ''; // Clear the table first
+                adminData.forEach((data, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td class="border px-4 py-2">${index + 1}</td>    
+                    <td class="border px-4 py-2">${data.enrollmentNumber}</td>
+                    <td class="border px-4 py-2">${data.score}</td>
+                    <td class="border px-4 py-2"><input type="checkbox" class="delete-checkbox" data-index="${index}"></td>
+                    `;
+                    adminTable.appendChild(row);
+                });
+            };
+
+            renderTable(); // Initially render the table
+
+            // Handle Delete Selected button click
+            document.getElementById("delete-selected").addEventListener("click", () => {
+                const checkboxes = document.querySelectorAll(".delete-checkbox:checked");
+
+                // Get the indices of the selected checkboxes
+                const indicesToDelete = Array.from(checkboxes).map(checkbox => parseInt(checkbox.getAttribute("data-index")));
+
+                // Filter out the data that is not selected for deletion
+                const updatedAdminData = adminData.filter((_, index) => !indicesToDelete.includes(index));
+
+                // Update localStorage with the filtered data
+                localStorage.setItem("adminData", JSON.stringify(updatedAdminData));
+
+                // Reload the page to refresh the table
+                location.reload();
+            });
+
+            // Function to add a new admin entry
+            const addAdminEntry = (enrollmentNumber, score) => {
+                // Check for duplicates
+                const isDuplicate = adminData.some(data => data.enrollmentNumber === enrollmentNumber);
+                if (isDuplicate) {
+                    alert("Enrollment number already exists! Please enter a unique enrollment number.");
+                    return;
+                }
+
+                // Add the new data if no duplicates found
+                adminData.push({ enrollmentNumber, score });
+                localStorage.setItem("adminData", JSON.stringify(adminData));
+                renderTable(); // Re-render the table
+            };
+
+            // Example of adding a new entry (you can replace this with form inputs)
+            // Replace the following line with the form inputs or any method to capture the data
+            // Example: addAdminEntry("123456", 85);
+        });
+    </script>
+</head>
+<body>
+    <div class="container mx-auto p-4">
+        <center><h2 class="text-2xl font-bold mb-4">Admin Panel</h2></center>
+        <table class="table-auto w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">No</th>
+                    <th class="px-4 py-2">Enrollment Number</th>
+                    <th class="px-4 py-2">Score</th>
+                    <th class="px-4 py-2">Select</th>
+                </tr>
+            </thead>
+            <tbody id="admin-table">
+
+            </tbody>
+        </table>
+        <button id="delete-selected" class="bg-red-500 text-white px-4 py-2 mt-4">Delete Selected</button>
+    </div>
+</body>
+</html>

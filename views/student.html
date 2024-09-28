@@ -1,0 +1,323 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Quiz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const correctAnswers = {
+                option1: "A",
+                option2: "B",
+                option3: "B",
+                option4: "A",
+                option5: "A",
+                option6: "A",
+                option7: "A",
+                option8: "A",
+                option9: "A",
+                option10: "A"
+            };
+
+            const submitButton = document.getElementById("submit-button");
+            const scoreDisplay = document.getElementById("score-display");
+
+            submitButton.addEventListener("click", () => {
+                const enrollmentNumber = document.getElementById("enrollment-number").value.trim();
+                if (!enrollmentNumber) {
+                    alert("Please enter your enrollment number.");
+                    return;
+                }
+
+                // Check if enrollment number is already used
+                const adminData = JSON.parse(localStorage.getItem("adminData")) || [];
+                const existingEntry = adminData.find(data => data.enrollmentNumber === enrollmentNumber);
+
+                if (existingEntry) {
+                    alert("This enrollment number has already been used. Please enter a different number.");
+                    return;
+                }
+
+                let score = 0;
+                let allAnswered = true;
+
+                // Calculate score
+                for (const question in correctAnswers) {
+                    const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                    if (!selectedOption) {
+                        allAnswered = false;
+                        break;
+                    } else if (selectedOption.value === correctAnswers[question]) {
+                        score++;
+                    }
+                }
+
+                if (!allAnswered) {
+                    alert("Please answer all questions before submitting.");
+                } else {
+                    // Save the student's enrollment number and score
+                    adminData.push({ enrollmentNumber, score });
+                    localStorage.setItem("adminData", JSON.stringify(adminData));
+
+                    scoreDisplay.textContent = `Student: Your score is ${score} out of 10`;
+                    alert(`Your score is ${score} out of 10`);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="flex flex-col items-center p-4 bg-background">
+        <div class="border border-border p-4 mb-4 w-full max-w-md">
+            <div class="flex flex-col items-center p-4 bg-background">
+                <h2 id="score-display" class="text-xl font-bold mb-4">Student: Your score is 0 out of 10</h2>
+
+                <div class="flex flex-col items-center p-4 bg-background">
+                    <div class="border border-border p-4 mb-4 w-full max-w-md">
+                        <div class="flex flex-col items-center p-4 bg-background">
+                           
+                            <!-- Enrollment Number Input -->
+                            <div class="mb-4 w-full">
+                                <label for="enrollment-number" class="block text-sm font-medium text-gray-700">Enrollment Number</label>
+                                <input type="text" id="enrollment-number" name="enrollment-number" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter your enrollment number">
+                            </div>
+                                            <!-- Question 1 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 1 What is Node JS?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option1" value="A" class="mr-2" id="option1-a" />
+                                        <span>A. A JavaScript runtime</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option1" value="B" class="mr-2" id="option1-b" />
+                                        <span>B. A programming language</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option1" value="C" class="mr-2" id="option1-c" />
+                                        <span>C. A database</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option1" value="D" class="mr-2" id="option1-d" />
+                                        <span>D. A web framework</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 2 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 2 Which of the following is true about Node.js?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option2" value="A" class="mr-2" id="option2-a" />
+                                        <span>A. It is a single-threaded application</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option2" value="B" class="mr-2" id="option2-b" />
+                                        <span>B. It is a multi-threaded application</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option2" value="C" class="mr-2" id="option2-c" />
+                                        <span>C. It is a web server</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option2" value="D" class="mr-2" id="option2-d" />
+                                        <span>D. None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 3 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 3 What is the use of 'fs' module in Node.js?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option3" value="A" class="mr-2" id="option3-a" />
+                                        <span>A. To handle HTTP requests</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option3" value="B" class="mr-2" id="option3-b" />
+                                        <span>B. To work with the file system</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option3" value="C" class="mr-2" id="option3-c" />
+                                        <span>C. To manage database connections</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option3" value="D" class="mr-2" id="option3-d" />
+                                        <span>D. To manage sessions</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 4 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 4 Which of the following is not a Node.js framework?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option4" value="A" class="mr-2" id="option4-a" />
+                                        <span>A. Express.js</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option4" value="B" class="mr-2" id="option4-b" />
+                                        <span>B. Koa.js</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option4" value="C" class="mr-2" id="option4-c" />
+                                        <span>C. Django</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option4" value="D" class="mr-2" id="option4-d" />
+                                        <span>D. Hapi.js</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 5 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 5 What is the purpose of middleware in Node.js?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option5" value="A" class="mr-2" id="option5-a" />
+                                        <span>A. To process requests and responses</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option5" value="B" class="mr-2" id="option5-b" />
+                                        <span>B. To connect to a database</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option5" value="C" class="mr-2" id="option5-c" />
+                                        <span>C. To create API endpoints</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option5" value="D" class="mr-2" id="option5-d" />
+                                        <span>D. To manage sessions</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 6 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 6 What is the purpose of the package.json file?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option6" value="A" class="mr-2" />
+                                        <span>A. To manage project dependencies</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option6" value="B" class="mr-2" />
+                                        <span>B. To configure environment variables</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option6" value="C" class="mr-2" />
+                                        <span>C. To specify project entry point</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option6" value="D" class="mr-2" />
+                                        <span>D. To store project metadata</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 7 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 7 How do you install a package using npm?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option7" value="A" class="mr-2" />
+                                        <span>A. npm install <package-name></span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option7" value="B" class="mr-2" />
+                                        <span>B. npm get <package-name></span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option7" value="C" class="mr-2" />
+                                        <span>C. npm add <package-name></span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option7" value="D" class="mr-2" />
+                                        <span>D. npm require <package-name></span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 8 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 8 Which command is used to start a Node.js application?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option8" value="A" class="mr-2" />
+                                        <span>A. node <filename>.js</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option8" value="B" class="mr-2" />
+                                        <span>B. start <filename>.js</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option8" value="C" class="mr-2" />
+                                        <span>C. run <filename>.js</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option8" value="D" class="mr-2" />
+                                        <span>D. execute <filename>.js</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 9 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 9 What is middleware in Node.js?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option9" value="A" class="mr-2" />
+                                        <span>A. Code that runs between the request and response</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option9" value="B" class="mr-2" />
+                                        <span>B. A type of database</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option9" value="C" class="mr-2" />
+                                        <span>C. A framework for building APIs</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option9" value="D" class="mr-2" />
+                                        <span>D. A security measure</span>
+                                    </label>
+                                </div>
+                            </div>
+                
+                            <!-- Question 10 -->
+                            <div class="border border-border p-4 mb-4 w-full max-w-md">
+                                <p class="font-semibold">Q. 10 Which function is used to read a file in Node.js?</p>
+                                <div class="mt-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option10" value="A" class="mr-2" />
+                                        <span>A. fs.readFile()</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option10" value="B" class="mr-2" />
+                                        <span>B. readFileSync()</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option10" value="C" class="mr-2" />
+                                        <span>C. fs.open()</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="option10" value="D" class="mr-2" />
+                                        <span>D. fs.getFile()</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <button id="submit-button" class="mt-4 bg-blue-500 text-white p-2 rounded">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                
+        </div>
+    </div>
+</body>
+</html>
+
+
